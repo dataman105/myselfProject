@@ -1,0 +1,29 @@
+1、通过git init命令把这个目录变成Git可以管理的仓库
+   git init 
+
+2、用命令git add告诉Git，把文件添加到仓库：
+   git add readme.txt  #单个文件
+   git add .           #整个文件夹
+
+3、用命令git commit告诉Git，把文件提交到仓库：
+   git commit -m "wrote a readme file"
+
+
+4、创建shh公钥
+   ssh-keygen -t rsa -C "398769187@qq.com" 
+   或
+   ssh-keygen -t rsa
+
+5、复制id_rsa.pub公钥到 github上  新增的ssh key
+   
+
+6、git文件到github
+   git remote add origin git@github.com:dataman105/myselfProject.git
+   如果报错：
+         ERROR: Repository not found.
+         fatal: Could not read from remote repository.
+   换成：
+      git remote set-url origin git@github.com:dataman105/myselfProject.git
+
+7、推送本地文件
+   git push -u origin master
