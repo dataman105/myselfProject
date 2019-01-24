@@ -49,7 +49,7 @@
     	</div>
     	<br>
     	<div class="div-bor">
-    		<i class="icon-slect"><img src="images/131.png" height="25px" width="25px"></i>
+    		<i class="icon-slect"><img src="img/131.png" height="25px" width="25px"></i>
     		<input type="text" id="filterName" class="slect"/>
     	</div>
     	<br>
@@ -91,9 +91,13 @@
  	insert.onclick= function(){
 	  var tbody = document.getElementById('tbMain');
 	  tbody.style.backgroundColor="white"
+	  
 	  var trow = getDataRow(); //定义一个方法,返回tr数据
 	  var getValue=getV(trow);  //保存数据到数据库
   	  tbody.prepend(trow); //插入到表格中
+//	  updt();
+//aaa();
+
 	  }
  	
    	function getV(trow){
@@ -124,7 +128,6 @@
 
 	 //删除操作
 	function getDataRow(){
-		//自动生成序号-倒序
 		var row = document.createElement('tr'); //创建行
 		var xhCell = document.createElement('td');//创建第1列，操作列
 	 	xhCell.innerHTML=document.getElementById("tab").rows.length;
@@ -133,7 +136,6 @@
 	 	xhCell.id='xh';
 	 	row.appendChild(xhCell); //加入行  ，下面类似
 		
-		//编号
 	 	var bh_value=document.getElementById('bh');
 	 	var bhCell = document.createElement('td');//创建第2列，操作列
 	 	bhCell.innerHTML=bh_value.value;
@@ -142,7 +144,6 @@
 	 	bhCell.id='bh';
 	 	row.appendChild(bhCell); //加入行  ，下面类似
 	 	
-	 	//姓名
 	 	var xm_value=document.getElementById('xm');
 	 	var xmCell = document.createElement('td');//创建第3列，操作列
 	 	xmCell.innerHTML=xm_value.value;
@@ -151,7 +152,6 @@
 	 	xmCell.id='xm';
 	 	row.appendChild(xmCell); //加入行  ，下面类似
 	 	
-	 	//职位
 	 	var zw_value=document.getElementById('zw');
 	 	var zwCell = document.createElement('td');//创建第4列，操作列
 	 	zwCell.innerHTML=zw_value.value;
@@ -159,24 +159,25 @@
 	 	zwCell.id='zw';
 	 	row.appendChild(zwCell); //加入行  ，下面类似
 
-		//操作
 		 var delCell = document.createElement('td');//创建第5列，操作列
 		 delCell.height="30px";
 		 row.appendChild(delCell);
 		 
-		 //更新-操作
-		 var btnUpdate = document.createElement('input'); //创建一个input控件
-		 btnUpdate.setAttribute('type','button'); //type="button"
-		 btnUpdate.className = "btnUpdate";
-		 btnUpdate.setAttribute('value','更新'); 
+		 var btnUpe1 = document.createElement('input'); //创建一个input控件
+		 btnUpe1.setAttribute('type','button'); //type="button"
+		 btnUpe1.className = "btnUpe1";
+		 btnUpe1.setAttribute('value','更新'); 
 		 
-		 //删除操作
+//		 var btnok = document.createElement('input'); //创建一个input控件
+//		 btnok.setAttribute('type','button'); //type="button"
+//		 btnok.className = "btnok1";
+//		 btnok.setAttribute('value','确定'); 
+		 
 		 var btnDel = document.createElement('input'); //创建一个input控件
 		 btnDel.setAttribute('type','button'); //type="button"
-		 btnDel.setAttribute('value','删除');
-		 btnDel.id="btnDel";
+		 btnDel.setAttribute('value','删除'); 
 		 
-		 //上传操作-文件
+		 //上传文件
 		 var btnupload=document.createElement('div');
 		 btnupload.id="upload";
 		 btnupload.style.display="inline"; //标签并排显示
@@ -186,83 +187,78 @@
 		 btnupload1.style.display="none";
 		 btnupload1.className = "btnupload";
 		 btnupload1.id='btnupload1';
-		 btnupload1.onchange=myupload;
-        //上传操作-按钮
+//		 btnupload1.onchange=function(){   //上传文件---后台flask接受
+//		 var files = $("#btnupload1").get(0).files;
+//			var formData = new FormData();
+//			for(var i=0; i<files.length; i++){
+//				formData.append("file2", files[i]);
+//			}
+//			formData.append("usr", bh_value.value);
+//		    $.ajax({
+//		        url:"http://127.0.0.1:8080/",   //接受文件地址
+//		        type: "POST",
+//		        data: formData,
+//		        contentType:false,
+//		        processData:false,
+//		        success:function (returndata) {
+//		            console.log(returndata)
+//		    　　	}
+//		    　　})
+//		 };
 		 var btnupload2 = document.createElement('input'); //创建一个input控件
 		 btnupload2.setAttribute('type','button');
 		 btnupload2.setAttribute('value','上传');
-		 btnupload2.className ="upload2";
-//		 btnupload2.onclick=function(){
-//		 	document.getElementById("btnupload1").click(); 
-//		 };
+		 btnupload2.className ="upDate1";
+		 btnupload2.onclick=function(){
+		 	document.getElementById("btnupload1").click(); 
+		 };
 		 btnupload.insertBefore(btnupload1,null);
 		 btnupload.insertBefore(btnupload2,null);
 		 
-		 //下载操作
+		 
+		 //下载文件
 		 var btndownload = document.createElement('input'); //创建一个input控件
 		 btndownload.setAttribute('type','button'); //type="button"
 		 btndownload.setAttribute('value','下载');
-		 btndownload.className ="btndownload1";
-		 btndownload.id ="btndownload1";
-		 btndownload.onclick=btndownload2;
+		 btndownload.className='downl';
+		 btndownload.onclick=function(){
+			var $td=$(this).parent();
+		    var filename=$td.parent("tr").find("td").eq(1).text();
+		    console.log(filename);
+		 	$.ajax({
+		 		url:"http://127.0.0.1:8080/download", 
+		 		data:{"mydata": filename},
+		 		success:function(data){
+//       			window.open("http://10.0.106.3:8888/File0Save/"+data);
+//       			console.log(data);    			
+         			var $form = $('<form method="GET"></form>');
+				    $form.attr('action', "http://127.0.0.1:8080/File0Save/"+data);
+				    $form.appendTo($('body'));
+				    $form.submit();
+         		}
+      		});
+		 }
 		 
-		delCell.appendChild(btnUpdate);     //添加更新按钮到“操作” td
-	    delCell.appendChild(btnDel);        //添加删除按钮到“操作” td
-	    delCell.appendChild(btnupload);     //添加上传按钮到“操作” td
-	    delCell.appendChild(btndownload);   //添加下载按钮到“操作” td
+		
+		//删除文件
+		btnDel.onclick=function(){
+			this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);
+		}
+		delCell.appendChild(btnUpe1);
+//	    delCell.appendChild(btnok);
+	    delCell.appendChild(btnDel);  //把删除按钮加入td，别忘了
+	    delCell.appendChild(btnupload);
+	    delCell.appendChild(btndownload);  //把删除按钮加入td，别忘了
 	    return row;
 	}
-	
-	
-	//下载文件名称
-	$('table#tab').on("click",".btndownload1",function(){
-		//获取编号
-		var $td=$(this).parent();
-		btndownload2_filename=$td.parent("tr").find("td").eq(1).text();  //设置全局变量共享名称
-		console.log(btndownload2_filename)
-		var formData = new FormData();
-		formData.append("mydata",btndownload2_filename)
-		$.ajax({
-	 		url:"http://127.0.0.1:8080/dld/", 
-	 		data:formData,
-	 		type: "POST",
-	 		contentType:false,
-	        processData:false,
-	 		success:function(data){			
-	 			window.open("http://127.0.0.1:8080/"+data);
-//   			var $form = $('<form method="GET"></form>');
-//			    $form.attr('action', "http://127.0.0.1:8080/"+data);
-//			    $form.appendTo($('body'));
-//			    $form.submit();
-//				console.log(data)
-     		}
-		});
-	})
-	
 
-
-	//删除文件
-	$("table#tab").on("click","#btnDel",function(){
-		var $td=$(this).parent();
-		var btne=$td.parent("tr").find("td").eq(1).text();
-		console.log(btne);  //删除的编码
-		this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);
-	})
-	
-	
-	//上传文件
-	$('table#tab').on("click",".upload2",function(){
-		document.getElementById("btnupload1").click();
-		//获取编号
+	//上传数据
+	$('table#tab').on("click",".upDate1",function(){
 		var $td=$(this).parent().parent();
-		filename=$td.parent("tr").find("td").eq(1).text();  //设置全局变量共享名称
-	})
-	
-	
-	function myupload(){
-	    //上传文件
-	    var rowData=new Array();
-	    var files = $("#btnupload1").get(0).files;
+		var rowData=new Array();
+		var filename=$td.parent("tr").find("td").eq(1).text();
+	    console.log(filename);  //获取更新后的数据
+    	var files = $("#btnupload1").get(0).files;
 		var formData = new FormData();
 		for(var i=0; i<files.length; i++){
 			formData.append("file2", files[i]);
@@ -278,18 +274,21 @@
 	            console.log(returndata)
 	    　　	}
 	    　　})
-	}
+	})
 
-	
+
 	//更新数据
-	$('table#tab').on("click",".btnUpdate",function(){
+	$('table#tab').on("click",".btnUpe1",function(){
 		var $td=$(this).parent();
 		var rowData=new Array();
 	    for(var i=0;i<4;i++){
 	    	rowData["td"+i.toString()]=$td.parent("tr").find("td").eq(i).text();
 	    }
 	    console.log(rowData);  //获取更新后的数据
+//	    console.log($td.parent("tr").find("td").eq(1).text());
 	})
+	
+	
 	
 	//双击修改单元格数据
 	$('table#tab').on("dblclick","td",function(){
@@ -307,112 +306,77 @@
 	});
 	
 	
-	$(function(){
-	    $.ajax({
-	        url:'http://127.0.0.1:8080/table/',
-	        type:'get',
-	        dataType:'json',
-	        success:function(data){
-	            for(i in data){
-	            	var tbody = document.getElementById('tbMain');
-					tbody.style.backgroundColor="white"
-					var trow = getDataRow2(data[i]); //定义一个方法,返回tr数据
-				  	tbody.prepend(trow); //插入到表格中
-	            }
-	        }
-	    })
-	})
-	
-	
-	function getDataRow2(data2){
-		//自动生成序号-倒序
-		var row = document.createElement('tr'); //创建行
-		var xhCell = document.createElement('td');//创建第1列，操作列
-	 	xhCell.innerHTML=document.getElementById("tab").rows.length;
-	 	xhCell.style.textAlign="center";
-	 	xhCell.height="30px";
-	 	xhCell.id='xh';
-	 	row.appendChild(xhCell); //加入行  ，下面类似
-		
-		//编号
-	 	var bhCell = document.createElement('td');//创建第2列，操作列
-	 	bhCell.innerHTML=data2.bh;
-	 	bhCell.style.textAlign="center"
-	 	bhCell.height="30px"
-	 	bhCell.id='bh';
-	 	row.appendChild(bhCell); //加入行  ，下面类似
-	 	
-	 	//姓名
-	 	var xmCell = document.createElement('td');//创建第3列，操作列
-	 	xmCell.innerHTML=data2.xm;
-	 	xmCell.style.textAlign="center"
-	 	xmCell.height="30px"
-	 	xmCell.id='xm';
-	 	row.appendChild(xmCell); //加入行  ，下面类似
-	 	
-	 	//职位
-	 	var zwCell = document.createElement('td');//创建第4列，操作列
-	 	zwCell.innerHTML=data2.zw;
-	 	zwCell.height="30px"
-	 	zwCell.id='zw';
-	 	row.appendChild(zwCell); //加入行  ，下面类似
+//	
+//	function aaa(){
+//		  	
+//		  var btn1 = document.getElementsByClassName("upDate1");
+//		
+//		  for(var i=0;i<btn1.length;i++){
+//		  
+//		  var a = btn1[i];
+//			 a.index = i;//给每个className为child的元素添加index属性;
+//			a.onclick = function(){
+//				var index11 = this.index;
+//				
+//				console.log(index11)
+//				
+//			}
+//		  }
+//		 } 
+//
+//aaa()
+//
+//	$('table#tab').on("dblclick","td",function(){
+//		var $td=$(this);
+//	    var _t=$td.text();
+//	    var _w=$td.width();
+//		var _h=$td.height();
+//	    $td.html("").css({"padding":0});
+//		var $input=$("<input type='text' style='width:100px'>");
+//	    $input.appendTo($td).width(_w).height(_h).val(_t).focus().blur(function(){
+//	    	$td.html($(this).val());
+//	    });
+//	});
 
-		//操作
-		 var delCell = document.createElement('td');//创建第5列，操作列
-		 delCell.height="30px";
-		 row.appendChild(delCell);
-		 
-		 //更新-操作
-		 var btnUpdate = document.createElement('input'); //创建一个input控件
-		 btnUpdate.setAttribute('type','button'); //type="button"
-		 btnUpdate.className = "btnUpdate";
-		 btnUpdate.setAttribute('value','更新'); 
-		 
-		 //删除操作
-		 var btnDel = document.createElement('input'); //创建一个input控件
-		 btnDel.setAttribute('type','button'); //type="button"
-		 btnDel.setAttribute('value','删除');
-		 btnDel.id="btnDel";
-		 
-		 //上传操作-文件
-		 var btnupload=document.createElement('div');
-		 btnupload.id="upload";
-		 btnupload.style.display="inline"; //标签并排显示
-		 var btnupload1 = document.createElement('input'); //创建一个input控件
-		 btnupload1.setAttribute('type','file');
-		 btnupload1.multiple="multiple";
-		 btnupload1.style.display="none";
-		 btnupload1.className = "btnupload";
-		 btnupload1.id='btnupload1';
-		 btnupload1.onchange=myupload;
-        //上传操作-按钮
-		 var btnupload2 = document.createElement('input'); //创建一个input控件
-		 btnupload2.setAttribute('type','button');
-		 btnupload2.setAttribute('value','上传');
-		 btnupload2.className ="upload2";
-//		 btnupload2.onclick=function(){
-//		 	document.getElementById("btnupload1").click(); 
-//		 };
-		 btnupload.insertBefore(btnupload1,null);
-		 btnupload.insertBefore(btnupload2,null);
-		 
-		 //下载操作
-		 var btndownload = document.createElement('input'); //创建一个input控件
-		 btndownload.setAttribute('type','button'); //type="button"
-		 btndownload.setAttribute('value','下载');
-		 btndownload.className ="btndownload1";
-		 btndownload.id ="btndownload1";
-//		 btndownload.onclick=btndownload2;
-		 
-		delCell.appendChild(btnUpdate);     //添加更新按钮到“操作” td
-	    delCell.appendChild(btnDel);        //添加删除按钮到“操作” td
-	    delCell.appendChild(btnupload);     //添加上传按钮到“操作” td
-	    delCell.appendChild(btndownload);   //添加下载按钮到“操作” td
-	    return row;
-	}
-	
 
-	
+//	
+//	function  updt(){
+//		var upBtn = document.getElementsByClassName("btnUpe1");
+//		for(var i=0;i<upBtn.length;i++){
+//			var a = upBtn[i];
+// 			 a.index = i;//给每个className为child的元素添加index属性;
+//			a.onclick = function(){
+//				var s = this.parentElement.parentElement;
+//				var s1 = s.children[1];
+//				var s2 = s.children[2];
+//				var s3 = s.children[3];
+//				var input1 = document.createElement("input");
+//				input1.value = s1.innerText;
+//				input1.id='ipt1'
+//				input1.style.width ="100%";
+//				input1.style.height="100%";
+//				s1.innerText  ="";
+//				var input2 = document.createElement("input");
+//				input2.value = s2.innerText;
+//				input2.id='ipt2'
+//				input2.style.width ="100%";
+//				input2.style.height="100%";
+//				s2.innerText  ="";
+//				var input3 = document.createElement("input");
+//				input3.value = s3.innerText;
+//				input3.id='ipt3'
+//				input3.style.width ="100%";
+//				input3.style.height="100%";
+//				s3.innerText  ="";
+//				s1.appendChild(input1);
+//				s2.appendChild(input2);
+//				s3.appendChild(input3);
+//			}
+//		}
+//	}
+//	
+
+
 </script>
 
 </body>
